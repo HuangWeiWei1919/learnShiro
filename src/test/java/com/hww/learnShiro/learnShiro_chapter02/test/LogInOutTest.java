@@ -2,10 +2,8 @@ package com.hww.learnShiro.learnShiro_chapter02.test;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.util.ThreadContext;
@@ -14,7 +12,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class LogInOutTest {
-
+	
+	/**
+	 * 
+	 * @Description: 初始化登录
+	 * @time: 2015年9月23日 上午9:41:57
+	 */
 	@Test
 	public void testHelloWorld() {
 
@@ -45,7 +48,12 @@ public class LogInOutTest {
 		Assert.assertEquals(false, subject.isAuthenticated());
 
 	}
-
+	
+	/**
+	 * 
+	 * @Description: 单个Realm
+	 * @time: 2015年9月23日 上午9:43:16
+	 */
 	@Test
 	public void testCustomRealm() {
 
@@ -76,7 +84,12 @@ public class LogInOutTest {
 		Assert.assertEquals(false, subject.isAuthenticated());
 
 	}
-
+	
+	/**
+	 * 
+	 * @Description: 多个Realm
+	 * @time: 2015年9月23日 上午9:45:05
+	 */
 	@Test
 	public void testCustomMultiRealm() {
 
@@ -120,7 +133,12 @@ public class LogInOutTest {
 
 		Assert.assertEquals(false, subject.isAuthenticated());
 	}
-
+	
+	/**
+	 * 
+	 * @Description: jdbcRealm
+	 * @time: 2015年9月23日 上午9:44:47
+	 */
 	@Test
 	public void testJdbcRealm() {
 		// 获取SecurityManager factory,使用ini配置文件初始化SecurityManager
@@ -152,52 +170,8 @@ public class LogInOutTest {
 	}
 	
 	
-	
-	@Test(expected=UnknownAccountException.class)
-	public void testAllSuccessfulStrategy() {
-		login("classpath:shiro-authenticator-all-success.ini");
-		
-		Subject subject = SecurityUtils.getSubject();
-		
-		//得到一个身份集合，其中包含了Realm验证成功的身份信息
-		PrincipalCollection collection = subject.getPrincipals();
-		Assert.assertEquals(2,collection.asList().size());
-	}
-	
-	@Test
-	public void testAllSuccessfulStrategyWithFail() {
-		login("classpath:shiro-authenticator-all-fail.ini");
-		
-		SecurityUtils.getSubject();
-		
-	
-	}
-	
 	@After
-    public void tearDown() throws Exception {
-        ThreadContext.unbindSubject();//退出时请解除绑定Subject到线程 否则对下次测试造成影响
-    }
-	
-	/**
-	 * 
-	 * @Description: 通用登录逻辑
-	 * @param configFile
-	 * @time: 2015年9月22日 下午5:15:00
-	 */
-	private void login(String configFile) {
-		// 获取SecurityManager factory,使用ini配置文件初始化SecurityManager
-		Factory<org.apache.shiro.mgt.SecurityManager> factory = new IniSecurityManagerFactory(configFile);
-
-		// 得到SecurityManager实例，并绑定给SecurityUtils
-		org.apache.shiro.mgt.SecurityManager securityManager = factory
-				.getInstance();
-		SecurityUtils.setSecurityManager(securityManager);
-		// 得到Subject，及创建用户名/密码 身份验证 token（即用户身份/凭证）
-		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken("zhang", "123");
-		
-		subject.login(token);
-		
-		
+	public void tearDown() throws Exception {
+		ThreadContext.unbindSubject();// 退出时请解除绑定Subject到线程 否则对下次测试造成影响
 	}
 }
