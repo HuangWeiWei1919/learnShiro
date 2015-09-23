@@ -12,7 +12,6 @@ import org.apache.shiro.util.ThreadContext;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class AuthenticatorTest {
 	/**
